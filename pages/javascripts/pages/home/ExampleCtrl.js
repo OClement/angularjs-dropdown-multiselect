@@ -173,6 +173,7 @@ angular.module('exampleApp').controller('ExampleCtrl', ['$scope', function($scop
     	onMaxSelectionReached: function(evt) { addMessage($scope.example16messages, 'onMaxSelectionReached', evt); },
     };
 
+
     // Function takes a target an array as first parameter and will push a string constructed
     // from any other paramters passed to it, serializing objects for easier inspection
     var addMessage = function(targetModel) {
