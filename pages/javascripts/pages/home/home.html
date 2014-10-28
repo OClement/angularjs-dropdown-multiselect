@@ -623,6 +623,69 @@ $scope.customFilter = 'a';
                 </div>
             </div>
         </accordion-group>
+        <accordion-group heading="Handling Events">
+            <div class="row">
+                <div class="col-xs-12">
+                    Custom Event Handlers can be executed on by using the `events` attribute
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <h3>Demo</h3>
+                    <div class="well">
+                        <div>
+                            <div ng-dropdown-multiselect options="example16data" selected-model="example16model" checkboxes="true" events="example16events"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h3>The model:</h3>
+                    <pre>{{example16model|json}}</pre>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h3>Events Fired:</h3>
+                    <pre>
+<span ng-repeat="msg in example16messages track by $index">{{msg}}<br /></span>
+                    </pre>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Code</h3>
+                    <div class="well">
+                        <div>
+<div hljs>
+// HTML
+<div ng-dropdown-multiselect 
+     options="example16data" 
+     selected-model="example16model" 
+     checkboxes="true" 
+     events="example16events"> 
+</div>
+
+// JavaScript
+$scope.example16model = [];
+$scope.example16data = [
+    {id: 1, label: "David"},
+    {id: 2, label: "Jhon"},
+    {id: 3, label: "Lisa"},
+    {id: 4, label: "Nicole"},
+    {id: 5, label: "Danny"}];
+    
+$scope.example16events = {
+    onItemSelect: function(evt) { addMessage($scope.example16messages, 'onItemSelect', evt); },
+    onItemDeselect: function(evt) { addMessage($scope.example16messages, 'onItemDeselect', evt); },
+    onSelectAll: function(evt) { addMessage($scope.example16messages, 'onSelectAll', evt); },
+    onInitDone: function(evt) { addMessage($scope.example16messages, 'onInitDone', evt); },
+    onMaxSelectionReached: function(evt) { addMessage($scope.example16messages, 'onMaxSelectionReached', evt); },
+};
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </accordion-group>
     </accordion>
     <h1>Full API Documentation</h1>
     <h2>Attributes</h2>

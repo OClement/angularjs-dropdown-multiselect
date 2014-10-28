@@ -229,16 +229,15 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                     $scope.externalEvents.onSelectAll();
 
                     angular.forEach($scope.options, function (value) {
-                        $scope.setSelectedItem(value[$scope.settings.idProp], true);
+                        $scope.setSelectedItem(value[$scope.settings.idProp], true, false);
                     });
+
                 };
 
                 $scope.deselectAll = function (sendEvent) {
-                    sendEvent = sendEvent || true;
-
-                    if (sendEvent) {
-                        $scope.externalEvents.onDeselectAll();
-                    }
+                    sendEvent = sendEvent === false ? false : true;
+                    
+                    if(sendEvent) $scope.externalEvents.onDeselectAll();
 
                     if ($scope.singleSelection) {
                         clearObject($scope.selectedModel);
@@ -247,9 +246,11 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                     }
                 };
 
-                $scope.setSelectedItem = function (id, dontRemove) {
+                $scope.setSelectedItem = function (id, dontRemove, sendEvent) {
                     var findObj = getFindObj(id);
                     var finalObj = null;
+
+                    sendEvent = sendEvent === false ? false : true;
 
                     if ($scope.settings.externalIdProp === '') {
                         finalObj = _.find($scope.options, findObj);
@@ -260,21 +261,22 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
                     if ($scope.singleSelection) {
                         clearObject($scope.selectedModel);
                         angular.extend($scope.selectedModel, finalObj);
-                        $scope.externalEvents.onItemSelect(finalObj);
+                        
+                        if(sendEvent) $scope.externalEvents.onItemSelect(finalObj);
 
                         return;
                     }
 
-                    dontRemove = dontRemove || false;
+                    dontRemove = dontRemove === true ? true : false;
 
                     var exists = _.findIndex($scope.selectedModel, findObj) !== -1;
 
                     if (!dontRemove && exists) {
                         $scope.selectedModel.splice(_.findIndex($scope.selectedModel, findObj), 1);
-                        $scope.externalEvents.onItemDeselect(findObj);
+                        if(sendEvent) $scope.externalEvents.onItemDeselect(findObj);
                     } else if (!exists && ($scope.settings.selectionLimit === 0 || $scope.selectedModel.length < $scope.settings.selectionLimit)) {
                         $scope.selectedModel.push(finalObj);
-                        $scope.externalEvents.onItemSelect(finalObj);
+                        if(sendEvent) $scope.externalEvents.onItemSelect(finalObj);
                     }
                 };
 

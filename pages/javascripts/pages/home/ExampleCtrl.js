@@ -155,4 +155,47 @@ angular.module('exampleApp').controller('ExampleCtrl', ['$scope', function($scop
     };
 
     $scope.customFilter = 'a';
+
+    $scope.example16model = [];
+    $scope.example16messages = [];
+    $scope.example16data = [
+    	{id: 1, label: "David"},
+        {id: 2, label: "Jhon"},
+        {id: 3, label: "Lisa"},
+        {id: 4, label: "Nicole"},
+        {id: 5, label: "Danny"}];
+    $scope.example16events = {
+    	onItemSelect: function(evt) { addMessage($scope.example16messages, 'onItemSelect', evt); },
+    	onItemDeselect: function(evt) { addMessage($scope.example16messages, 'onItemDeselect', evt); },
+    	onSelectAll: function(evt) { addMessage($scope.example16messages, 'onSelectAll', evt); },
+    	onDeselectAll: function(evt) { addMessage($scope.example16messages, 'onDeselectAll', evt); },
+    	onInitDone: function(evt) { addMessage($scope.example16messages, 'onInitDone', evt); },
+    	onMaxSelectionReached: function(evt) { addMessage($scope.example16messages, 'onMaxSelectionReached', evt); },
+    };
+
+    // Function takes a target an array as first parameter and will push a string constructed
+    // from any other paramters passed to it, serializing objects for easier inspection
+    var addMessage = function(targetModel) {
+
+    	if(typeof targetModel === void 0) {
+    		throw new Error('Invalid targetModel');
+    		return
+    	}
+
+    	targetModel = _.isArray(targetModel) ? targetModel: [];
+
+    	var rest, 
+    	funcLength = addMessage.length;
+  		rest = funcLength <= arguments.length ? [].slice.call(arguments, funcLength) : [];
+
+  		rest = _.map(rest, function(item) {
+  			if(angular.isObject(item)) {
+  				return unescape(JSON.stringify(item));
+			} else {
+				return item;
+			}
+  		});
+  		targetModel.push(rest.join(' '));
+    };
+
 }]);
